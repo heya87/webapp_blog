@@ -22,7 +22,7 @@ angular.module('blogApp')
     $scope.loading = true;
 
     // Get awesome things list
-    $http({method: 'GET', url: '/api/features'}).
+    $http({method: 'GET', url: '/api/index.php/features'}).
 
       success(function (data) {
         $scope.loading = false;
