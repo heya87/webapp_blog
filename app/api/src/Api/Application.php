@@ -75,10 +75,93 @@ class Application extends Slim
             catch(PDOException $e) {
                 echo json_encode($e->getMessage());
             }
-
         });
 
+
+        $this->get('/blogs/:id/posts/', function ($id) {
+
+            $sql = "select * FROM Post WHERE Blog_idTrip=".$id." ORDER BY idPost;";
+            try {
+                $db = $this->handleGetConnection();
+                $stmt = $db->query($sql);
+                $post= $stmt->fetchAll();
+                $db = null;
+                if ($post === null) {
+                    return $this->notFound();
+                }
+                $this->response->headers->set('Content-Type', 'application/json');
+                $this->response->setBody(json_encode($post));
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        });
+
+
+        $this->get('/blogs/:id/posts/:idTwo', function ($id, $idTwo) {
+
+            $sql = "select * FROM Post WHERE Blog_idTrip=".$id." AND idPost =".$idTwo." ORDER BY idPost;";
+            try {
+                $db = $this->handleGetConnection();
+                $stmt = $db->query($sql);
+                $post= $stmt->fetchAll();
+                $db = null;
+                if ($post === null) {
+                    return $this->notFound();
+                }
+            $this->response->headers->set('Content-Type', 'application/json');
+            $this->response->setBody(json_encode($post));
+
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        });
+
+
+
+        $this->get('/blogs/:idBlog/posts/:idPost/images/', function ($idBlog, $idPost) {
+
+            $sql = "select * FROM Image WHERE Post_idPost=".$idPost." ORDER BY idImage;";
+            try {
+                $db = $this->handleGetConnection();
+                $stmt = $db->query($sql);
+                $images= $stmt->fetchAll();
+                $db = null;
+                if ($images === null) {
+                    return $this->notFound();
+                }
+            $this->response->headers->set('Content-Type', 'application/json');
+            $this->response->setBody(json_encode($images));
+
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        });
+
+
+        $this->get('/blogs/:idBlog/posts/:idPost/comments/', function ($idBlog, $idPost) {
+
+            $sql = "select * FROM Comment WHERE Post_idPost=".$idPost." ORDER BY DateTime;";
+            try {
+                $db = $this->handleGetConnection();
+                $stmt = $db->query($sql);
+                $comments= $stmt->fetchAll();
+                $db = null;
+                if ($comments === null) {
+                    return $this->notFound();
+                }
+            $this->response->headers->set('Content-Type', 'application/json');
+            $this->response->setBody(json_encode($comments));
+
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        });
+
+
+
+
         $this->get('/blogs/:id', function ($id) {
+
 
             $sql = "select * FROM Blog WHERE idBlog=".$id." ORDER BY idBlog";
             try {
@@ -142,7 +225,9 @@ class Application extends Slim
       $dbuser="root";
       $dbpass="1234";
       $dbname="mydb";
-      $dbh = new \Slim\PDO\Database("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+/*      $dbh = new \Slim\PDO\Database("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+*/      $dbh= new \Slim\PDO\Database("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass, array(\Slim\PDO\Database::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+
       return $dbh;
     }
 

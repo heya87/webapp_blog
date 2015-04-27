@@ -14,4 +14,12 @@ angular.module('blogApp')
       success(function (data) {
       $scope.blog = data[0];
     });
+
+	$http({method: 'GET', url: '/api/index.php/blogs/1/posts'}).
+      success(function (data) {
+      $scope.posts = data;
+    });
   });
+
+
+
