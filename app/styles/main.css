@@ -77,3 +77,41 @@ body {
     border-bottom: 0;
   }
 }
+
+
+.blogs {
+  list-style: none;
+}
+
+.thumb {
+  float: left;
+  margin: -0.5em 1em 1.5em 0;
+  padding-bottom: 1em;
+  height: 100px;
+  width: 100px;
+}
+
+.blogs li {
+  clear: both;
+  height: 115px;
+  padding-top: 15px;
+}
+
+
+ul.blog-thumbs {
+  margin: 0;
+  list-style: none;
+}
+
+ul.blog-thumbs li {
+  border: 1px solid black;
+  display: inline-block;
+  margin: 1em;
+  background-color: white;
+}
+
+ul.blog-thumbs img {
+  height: 100px;
+  width: 100px;
+  padding: 1em;
+}

@@ -1,15 +1,7 @@
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
-</div>
 
 <div class="row marketing">
 
-  <p ng-if="loading">Loading...</p>
+<!--   <p ng-if="loading">Loading...</p>
 
   <div ng-repeat="thing in awesomeThings">
     <h4>{{thing.name}}</h4>
@@ -20,12 +12,20 @@
       <hr>
       <p>{{thing.error.description}}</p>
     </div>
-  </div>
+  </div> -->
 
-  <div ng-if="error" class="alert alert-danger">
-    <strong>{{error.statusText}}</strong>
-    <hr>
-    <p>{{error.description}}</p>
+  </div>
+  <div class="col-md-10">
+
+    <ul class="blogs">
+      <li ng-repeat="blog in blogs" class="thumbnail">  
+        <a href="#/blogs/{{blog.idBlog}}" class="thumb"><img src="http://th04.deviantart.net/fs70/PRE/f/2012/324/3/2/flag_of_japan_by_ozelotstudios-d5llymh.jpg"></a>
+        <a href="#/blogs/{{blog.idBlog}}">{{blog.Title}}</a>
+        <p>Destination: {{blog.Destination}}</p>
+        <p>{{blog.Description}}</p>
+      </li>
+      </li>
+    </ul>
   </div>
 
 </div>

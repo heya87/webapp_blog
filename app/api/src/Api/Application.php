@@ -59,6 +59,42 @@ class Application extends Slim
                 echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
         });
+
+        // /features
+        $this->get('/blogs', function () {
+
+            $sql = "select * FROM Blog";
+            try {
+                $db = $this->handleGetConnection();
+                $stmt = $db->query($sql);
+                $blogs= $stmt->fetchAll();
+                $db = null;
+                $this->response->headers->set('Content-Type', 'application/json');
+                $this->response->setBody(json_encode($blogs));
+            }
+            catch(PDOException $e) {
+                echo json_encode($e->getMessage());
+            }
+
+        });
+
+        $this->get('/blogs/:id', function ($id) {
+
+            $sql = "select * FROM Blog WHERE idBlog=".$id." ORDER BY idBlog";
+            try {
+                $db = $this->handleGetConnection();
+                $stmt = $db->query($sql);
+                $blog= $stmt->fetchAll();
+                $db = null;
+                if ($blog === null) {
+                    return $this->notFound();
+                }
+                $this->response->headers->set('Content-Type', 'application/json');
+                $this->response->setBody(json_encode($blog));
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        });
     }
 
     public function handleNotFound()
@@ -105,7 +141,7 @@ class Application extends Slim
       $dbhost="127.0.0.1";
       $dbuser="root";
       $dbpass="1234";
-      $dbname="featuresDB";
+      $dbname="mydb";
       $dbh = new \Slim\PDO\Database("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
       return $dbh;
     }
