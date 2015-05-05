@@ -11,7 +11,6 @@ use \Exception;
 class Application extends Slim
 {
 
-
     public function __construct(array $userSettings = array())
     {
         // Slim initialization
@@ -62,6 +61,7 @@ class Application extends Slim
 
         // /features
         $this->get('/blogs', function () {
+
 
             $sql = "select * FROM Blog";
             try {
@@ -178,7 +178,49 @@ class Application extends Slim
                 echo '{"error":{"text":'. $e->getMessage() .'}}';
             }
         });
+
+         $this->post('/newBlog', function () {
+
+            $this->debug_to_console( "Test" );
+
+            $req = $this->request();
+            $body = json_decode($req->getBody());
+
+            $sql = "INSERT INTO `Blog` (`Title`, `Destination`, `Description`,`User_idUser`) VALUES (:title, :destination, :description, '1');
+";
+            try {
+                $db = $this->handleGetConnection();
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam("title", $body->title);
+                $stmt->bindParam("destination", $destination);
+                $stmt->bindParam("description", $description); $stmt->execute();
+                $db = null;
+                echo json_encode($blog);
+            } catch(PDOException $e) {
+                echo '{"error":{"text":'. $e->getMessage() .'}}';
+            }
+        });
     }
+
+
+    function getBlogs() {
+    $request = \Slim\Slim::getInstance()->request();
+     $sql = "select * FROM Blog";
+            try {
+                $db = $this->handleGetConnection();
+                $stmt = $db->query($sql);
+                $blogs= $stmt->fetchAll();
+                $db = null;
+                echo (json_encode($blogs));
+            }
+            catch(PDOException $e) {
+                echo json_encode($e->getMessage());
+            }
+    }
+
+
+
+   
 
     public function handleNotFound()
     {
@@ -229,6 +271,16 @@ class Application extends Slim
 */      $dbh= new \Slim\PDO\Database("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass, array(\Slim\PDO\Database::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
       return $dbh;
+    }
+
+    public function debug_to_console( $data ) {
+
+    if ( is_array( $data ) )
+        $output = "<script>console.log( 'Debug Objects: " . implode( ',', $data) . "' );</script>";
+    else
+        $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
+
+    echo $output;
     }
 
 }

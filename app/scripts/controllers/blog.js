@@ -19,6 +19,22 @@ angular.module('blogApp')
       success(function (data) {
       $scope.posts = data;
     });
+
+
+    $scope.newBlog={};
+    $scope.doCreate = function (newBlog) {
+        console.log(newBlog.title);
+        console.log(newBlog.description);
+        console.log(newBlog.destination);
+
+        console.log(newBlog);
+
+        var res = $http.post('/api/index.php/newBlog', newBlog);
+        res.success(function(data, status, headers, config) {
+          console.log(data);
+        });
+    };
+
   });
 
 
