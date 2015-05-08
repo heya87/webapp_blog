@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="Blog" idMethod="native" phpName="Blog">
+    <column name="idBlog" phpName="Idblog" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Title" phpName="Title" type="VARCHAR" size="45"/>
+    <column name="Destination" phpName="Destination" type="LONGVARCHAR"/>
+    <column name="User_idUser" phpName="UserIduser" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="Description" phpName="Description" type="LONGVARCHAR"/>
+    <foreign-key foreignTable="User" name="fk_Blog_User1">
+      <reference local="User_idUser" foreign="idUser"/>
+    </foreign-key>
+    <index name="fk_Blog_User1_idx">
+      <index-column name="User_idUser"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="Comment" idMethod="native" phpName="Comment">
+    <column name="idComment" phpName="Idcomment" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="Text" phpName="Text" type="LONGVARCHAR"/>
+    <column name="DateTime" phpName="Datetime" type="TIMESTAMP"/>
+    <column name="User_idUser" phpName="UserIduser" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="Post_idPost" phpName="PostIdpost" type="INTEGER" primaryKey="true" required="true"/>
+    <foreign-key foreignTable="Post" name="fk_Comment_Post1">
+      <reference local="Post_idPost" foreign="idPost"/>
+    </foreign-key>
+    <foreign-key foreignTable="User" name="fk_Comment_User1">
+      <reference local="User_idUser" foreign="idUser"/>
+    </foreign-key>
+    <index name="fk_Comment_User1_idx">
+      <index-column name="User_idUser"/>
+    </index>
+    <index name="fk_Comment_Post1_idx">
+      <index-column name="Post_idPost"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="Image" idMethod="native" phpName="Image">
+    <column name="idImage" phpName="Idimage" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="Title" phpName="Title" type="VARCHAR" size="45"/>
+    <column name="url" phpName="Url" type="VARCHAR" size="45"/>
+    <column name="Post_idPost" phpName="PostIdpost" type="INTEGER" primaryKey="true" required="true"/>
+    <foreign-key foreignTable="Post" name="fk_Image_Post1">
+      <reference local="Post_idPost" foreign="idPost"/>
+    </foreign-key>
+    <index name="fk_Image_Post1_idx">
+      <index-column name="Post_idPost"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="Post" idMethod="native" phpName="Post">
+    <column name="idPost" phpName="Idpost" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="Title" phpName="Title" type="VARCHAR" size="45"/>
+    <column name="DateTime" phpName="Datetime" type="TIMESTAMP"/>
+    <column name="Description" phpName="Description" type="LONGVARCHAR"/>
+    <column name="Place" phpName="Place" type="VARCHAR" size="45"/>
+    <column name="Blog_idTrip" phpName="BlogIdtrip" type="INTEGER" primaryKey="true" required="true"/>
+    <foreign-key foreignTable="Blog" name="fk_Post_Blog1">
+      <reference local="Blog_idTrip" foreign="idBlog"/>
+    </foreign-key>
+    <index name="fk_Post_Blog1_idx">
+      <index-column name="Blog_idTrip"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="User" idMethod="native" phpName="User">
+    <column name="idUser" phpName="Iduser" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="UserName" phpName="Username" type="VARCHAR" size="45"/>
+    <column name="UserPassword" phpName="Userpassword" type="VARCHAR" size="45"/>
+    <column name="UserRole" phpName="Userrole" type="VARCHAR" size="45"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="feature" idMethod="native" phpName="Feature">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="45"/>
+    <column name="description" phpName="Description" type="VARCHAR" size="45"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+</database>

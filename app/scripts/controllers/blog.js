@@ -8,7 +8,7 @@
  * Controller of the blogApp
  */
 angular.module('blogApp')
-  .controller('BlogCtrl', function ($scope, $http, $routeParams) {
+  .controller('BlogCtrl', function ($scope, $http, $routeParams, $location) {
 
     $http({method: 'GET', url: '/api/index.php/blogs/1'}).
       success(function (data) {
@@ -31,6 +31,8 @@ angular.module('blogApp')
 
         var res = $http.post('/api/index.php/newBlog', newBlog);
         res.success(function(data, status, headers, config) {
+          $location.path('/blogs/' + data.idBlog);
+
           console.log(data);
         });
     };

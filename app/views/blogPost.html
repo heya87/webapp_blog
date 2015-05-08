@@ -1,3 +1,94 @@
-<p> {{blogPost.Title}} </p>
-<p> Time:  {{blogPost.DateTime}}</p>
-<p> Text: {{blogPost.Description}}</p>
+<div class="container">
+  <h2>{{blogPost.Title}}</h2>
+
+  <p>{{blogPost.DateTime}}</p>
+
+
+<div class="container slider">
+    <img ng-repeat="image in images" class="slide slide-animation nonDraggableImage"
+         ng-swipe-right="nextSlide()" ng-swipe-left="prevSlide()"
+         ng-hide="!isCurrentSlideIndex($index)" ng-src="{{image.url}}"
+         style="width: 100%; height: auto" />
+
+    <a class="arrow prev"  ng-click="nextSlide()"></a>
+    <a class="arrow next"  ng-click="prevSlide()"></a>
+    <nav class="slideNav">
+        <div class="wrapper">
+            <ul class="dots">
+                <li class="dot" ng-repeat="image in images">
+                    <a  ng-class="{'active':isCurrentSlideIndex($index)}"
+                       ng-click="setCurrentSlideIndex($index);">{{image.Title}}</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+ <li class="thumbnail">  
+
+	<p> Text: {{blogPost.Description}}</p>
+
+ </li>
+
+
+
+<li ng-repeat="comment in comments" >  
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<strong>{{comment.name}}</strong> <span class="text-muted pull-right">{{comment.DateTime}}</span>
+				</div>
+				<div class="panel-body">
+				{{comment.Text}}
+			</div><!-- /panel-body -->
+		</div><!-- /panel panel-default -->
+</li>
+
+	<div class="panel panel-default" ng-show="newComment.name">
+				<div class="panel-heading">
+					<strong>{{newComment.name}}</strong> <span class="text-muted pull-right">{{newComment.DateTime}}</span>
+					</div>
+					<div class="panel-body">
+					{{newComment.Text}}
+				</div><!-- /panel-body -->
+	</div><!-- /panel panel-default -->
+
+<form name="loginForm" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="name"> Your Name</label>
+                        <div class="col-sm-7">
+                           <span class="block input-icon input-icon-right">
+                                <input type="text" class="form-control" placeholder="name" name="nameame" ng-model="newComment.name" required focus/>
+                                <i class="ace-icon fa fa-user"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="password"> Talk!</label>
+                        <div class="col-sm-7">
+                           <span class="block input-icon input-icon-right">
+                           		<textarea type="newComment "class="form-control" placehoder="newComment" ng-model="newComment.Text" rows="3"></textarea>
+                                <i class="ace-icon fa fa-lock"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="space"></div>
+                     <div class="clearfix">
+                                                        <div class="row">
+                         <label class="col-sm-3 control-label no-padding-right"> </label>
+                        <div class="col-sm-7">
+                            <button type="submit" class="width-35 pull-right btn btn-sm btn-default" ng-click="doComment(newComment)" data-ng-disabled="loginForm.$invalid">
+                                <i class="ace-icon fa fa-key"></i>
+                                Comment
+                            </button>
+                                                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+
+
+
+
+</div>

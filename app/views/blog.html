@@ -1,3 +1,4 @@
+
 <p> {{blog.Title}} </p>
 <p> Destination:  {{blog.Destination}}</p>
 <p> Description: {{blog.Description}}</p>
@@ -12,6 +13,19 @@
         <p> Time: {{post.DateTime}}</p>
         <p>{{post.Description}}</p>
       </li>
+
       </li>
     </ul>
-  </div>
+
+<div class="row">
+    <div class="col-md-2 col-md-offset-5">
+        <button type="button" class="btn btn-default btn-sm btn-noBorder"  onclick="location.href='#/blogs/{{blog.idBlog}}/posts/newPost'">
+        <span class="glyphicon glyphicon-plus-sign gi-3x" ></span>
+        </button>
+    </div>
+</div>
+
+
+
+
+

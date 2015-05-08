@@ -20,6 +20,7 @@ angular.module('blogApp')
 
     $http({method: 'GET', url: '/api/index.php/blogs'}).
       success(function (data) {
+        console.log(data);
       $scope.blogs = data;
     });
 

@@ -1,0 +1,68 @@
+<div class="container">
+	<h2>My new post {{newPost.title}}</h2>
+	<form name="postForm" role="form">
+		<div class="form-group">
+			<label for="Title">Title:</label>
+			<input type="Title" class="form-control" id="title" ng-model="newPost.title">
+
+			<label for="Description">Text:</label>
+			<textarea class="form-control" rows="5" id="Description" ng-model="newPost.description" required></textarea>
+
+			<label for="Place">Place:</label>
+			<input type="Place" class="form-control" id="Place" ng-model="newPost.place" required>
+
+
+
+
+		</div>
+
+		<button type="submit" class="width-35 pull-right btn btn-sm btn-default" ng-click="doCreate(newPost)" data-ng-disabled="postForm.$invalid">
+			<i class="ace-icon fa fa-key"></i>
+			Post
+		</button>
+	</div>
+</form>
+
+</div>
+
+<div class="container">
+	<h2>Images:</h2>
+
+
+
+<form name="imageForm">
+<div ng-repeat="image in images">  
+	<div class="row">
+		<div class="col-md-3">         
+			<p> {{image.name}} </p>
+		</div>
+		<div class="col-md-6">
+			<p> {{image.link}} </p>
+
+		</div>
+		<div class="col-md-3">
+			<button type="button" class="btn btn-default btn-sm btn-noBorder"  ng-click="deleteImage($index)">
+				<span class="glyphicon glyphicon-remove pull-right"></span>
+			</button>
+
+
+		</div>
+	</div>
+</div>
+
+
+
+	<div class="form-group">
+		<label for="ImageName">Image name:</label>
+		<input type="ImageName" class="form-control" id="ImageName" ng-model="newImage.name" required>
+
+		<label for="ImageLink">Image link:</label>
+		<input type="ImageLink" class="form-control" id="ImageLink" ng-model="newImage.link" required>
+	</div>
+	<button type="submit" class="width-35 pull-right btn btn-sm btn-default" ng-click="addImage(newImage)" data-ng-disabled="imageForm.$invalid">
+		<i class="ace-icon fa fa-key"></i>
+		Add Image
+	</button>
+</form>
+
+</div>

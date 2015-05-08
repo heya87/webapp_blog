@@ -43,6 +43,10 @@ angular
         templateUrl: 'views/createBlog.html',
         controller: 'BlogCtrl'
       })
+      .when('/blogs/:blogId/newPost', {
+        templateUrl: 'views/createPost.html',
+        controller: 'NewBlogPostCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
