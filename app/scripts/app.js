@@ -16,6 +16,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'ngStorage',
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -39,6 +40,10 @@ angular
         templateUrl: 'views/signup.html',
         controller: 'AuthCtrl'
       })
+      .when('/logout', {
+        templateUrl: 'views/login.html',
+        controller: 'AuthCtrl'
+      })
       .when('/createBlog', {
         templateUrl: 'views/createBlog.html',
         controller: 'BlogCtrl'
@@ -51,3 +56,5 @@ angular
         redirectTo: '/'
       });
   });
+
+

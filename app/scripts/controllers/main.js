@@ -8,7 +8,7 @@
  * Controller of the blogApp
  */
 angular.module('blogApp')
-  .controller('MainCtrl', function ($scope, $http) {
+  .controller('MainCtrl', function ($scope, $http, $localStorage) {
 
     function createUnknownError(status) {
       return {

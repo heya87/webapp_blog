@@ -12,7 +12,7 @@
                         <label class="col-sm-3 control-label no-padding-right" for="userName"> User name</label>
                         <div class="col-sm-7">
                            <span class="block input-icon input-icon-right">
-                                <input type="text" class="form-control" placeholder="userName" name="userName" ng-model="signup.username" required focus/>
+                                <input type="text" class="form-control" placeholder="userName" name="userName" ng-model="newUser.username" required focus/>
                                 <i class="ace-icon fa fa-user"></i>
                             </span>
                         </div>
@@ -21,7 +21,7 @@
                         <label class="col-sm-3 control-label no-padding-right" for="password"> Password </label>
                         <div class="col-sm-7">
                            <span class="block input-icon input-icon-right">
-                                <input type="password" class="form-control" placeholder="Password" ng-model="signup.password" required/>
+                                <input type="password" class="form-control" placeholder="password" ng-model="newUser.password" required/>
                                 <i class="ace-icon fa fa-lock"></i>
                             </span>
                         </div>
@@ -31,7 +31,7 @@
                         <label class="col-sm-3 control-label no-padding-right" for="password"> Confirm password </label>
                         <div class="col-sm-7">
                            <span class="block input-icon input-icon-right">
-                                <input type="password" class="form-control" placeholder="Aaaand again" ng-model="signup.password2" required/>
+                                <input type="password" class="form-control" placeholder="Aaaand again" ng-model="newUser.password2" required/>
                                 <i class="ace-icon fa fa-lock"></i>
                             </span>
                         </div>
@@ -41,7 +41,7 @@
                                                         <div class="row">
                          <label class="col-sm-3 control-label no-padding-right"> </label>
                         <div class="col-sm-7">
-                            <button type="submit" class="width-35 pull-right btn btn-sm btn-default" ng-click="doSignup(signup)" data-ng-disabled="signUpForm.$invalid">
+                            <button type="submit" class="width-35 pull-right btn btn-sm btn-default" ng-click="doSignup(newUser)" data-ng-disabled="signUpForm.$invalid">
                                 <i class="ace-icon fa fa-key"></i>
                                 Sign up
                             </button>

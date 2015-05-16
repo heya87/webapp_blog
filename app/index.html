@@ -41,6 +41,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
               <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              <li><a href="#/"><span class="glyphicon glyphicon-log-out" ng-click="logout()"></span>Logout</a></li>
             </ul>
           </div>
         </div>
@@ -69,8 +70,8 @@
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.10.3/TweenMax.min.js"></script>
-
+    <script src="bower_components/ng-local-storage-service/angular-local-storage-service.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -82,5 +83,11 @@
         <script src="scripts/controllers/newBlogPost.js"></script>
         <script src="scripts/controllers/auth.js"></script>
         <!-- endbuild -->
+
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.10.3/TweenMax.min.js"></script>
+        <script src="bower_components/ngstorage/ngStorage.js"></script>
+
+        
+
 </body>
 </html>

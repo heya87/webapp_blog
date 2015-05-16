@@ -8,7 +8,7 @@
     <img ng-repeat="image in images" class="slide slide-animation nonDraggableImage"
          ng-swipe-right="nextSlide()" ng-swipe-left="prevSlide()"
          ng-hide="!isCurrentSlideIndex($index)" ng-src="{{image.url}}"
-         style="width: 100%; height: auto" />
+         style="width:100%; height: auto" />
 
     <a class="arrow prev"  ng-click="nextSlide()"></a>
     <a class="arrow next"  ng-click="prevSlide()"></a>
@@ -27,7 +27,7 @@
 
  <li class="thumbnail">  
 
-	<p> Text: {{blogPost.Description}}</p>
+	<p>  {{blogPost.Description}}</p>
 
  </li>
 

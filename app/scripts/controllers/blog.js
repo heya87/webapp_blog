@@ -8,7 +8,8 @@
  * Controller of the blogApp
  */
 angular.module('blogApp')
-  .controller('BlogCtrl', function ($scope, $http, $routeParams, $location) {
+  .controller('BlogCtrl', function ($scope, $http, $routeParams, $location, $localStorage) {
+    
 
     $http({method: 'GET', url: '/api/index.php/blogs/1'}).
       success(function (data) {
@@ -29,15 +30,36 @@ angular.module('blogApp')
 
         console.log(newBlog);
 
-        var res = $http.post('/api/index.php/newBlog', newBlog);
+        var config = {headers:  {
+                'username': $localStorage.currentUser,
+                'token': $localStorage.token
+            }
+        };
+
+
+        var res = $http.post('/api/index.php/newBlog', newBlog ,config);
         res.success(function(data, status, headers, config) {
           $location.path('/blogs/' + data.idBlog);
 
           console.log(data);
+        }).
+          error(function(data, status, headers, config) {
+
+            if(status == 401) {
+              window.alert("You are not logged in, please log in first.");
+              $location.path('/login');
+            } else {
+              window.alert("Error with status: " + status);
+            }
         });
     };
 
-  });
+    $scope.goToNewPost = function () {
+      console.log("hellooo im ehre")
+      $location.path('/blogs/'+ $scope.blog.idBlog + '/newPost');
+    };
 
+
+  });
 
 

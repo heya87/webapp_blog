@@ -1,38 +1,220 @@
 <?php
-error_reporting(-1);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-date_default_timezone_set('UTC');
+require 'vendor/autoload.php';
+require 'include/config.php';
+require 'Slim/Slim.php';
+\Slim\Slim::registerAutoloader();
 
-try {
-    // Initialize Composer autoloader
-    if (!file_exists($autoload = __DIR__ . '/vendor/autoload.php')) {
-        throw new \Exception('Composer dependencies not installed. Run `make install --directory app/api`');
+
+$app = new \Slim\Slim();
+$app->contentType('application/json');
+$app->get('/blogs', 'getBlogs');
+$app->get('/blogs/:id', 'getBlog');
+$app->get('/blogs/:id/posts', 'getPosts');
+$app->get('/blogs/:idBlog/posts/:idPost', 'getPost');
+$app->get('/blogs/:idBlog/posts/:idPost/images/', 'getImages');
+$app->get('/blogs/:idBlog/posts/:idPost/comments/', 'getComments');
+
+$app->post('/newBlog', 'addBlog');
+$app->post('/newPost', 'addPost');
+$app->post('/newImage', 'addImage');
+$app->post('/newComment', 'addComment');
+$app->run();
+
+
+function getBlogs() {
+$sql = "select * FROM Blog";
+  try {
+    $db = getConnection();
+    $stmt = $db->query($sql);
+    $blogs = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+    echo json_encode($blogs);
+  }
+  catch(PDOException $e) {
+    echo json_encode($e->getMessage());
+  }
+}
+
+
+function getBlog($id) {
+    $sql = "select * FROM Blog WHERE idBlog=".$id." ORDER BY idBlog";
+    try {
+        $db = getConnection();
+        $stmt = $db->query($sql);
+        $blog = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        echo json_encode($blog);
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
-    require_once $autoload;
+}
 
-    // Initialize Slim Framework
-    if (!class_exists('\\Slim\\Slim')) {
-        throw new \Exception(
-            'Missing Slim from Composer dependencies.'
-            . ' Ensure slim/slim is in composer.json and run `make update --directory app/api`'
-        );
-    }
 
-    // Run application
-    $app = new \Api\Application();
-    $app->run();
+function addBlog() {
+  global $app;
+  $req = $app->request();
+  $body = json_decode($req->getBody());
+ 
+$sql = "INSERT INTO `Blog` (`Title`, `Destination`, `Description`,`User_idUser`) VALUES (:title, :destination, :description, '1');
+";
+  try {
+    $db = getConnection();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam("title", $body->title);
+    $stmt->bindParam("destination", $body->destination);
+    $stmt->bindParam("description", $body->description);
+    $stmt->execute();
+    $idBlog = $db->lastInsertId();
+    $db = null;
+/*    $body['idBlog'] = $idBlog;
+*/    $body->idBlog = $idBlog;
+    echo json_encode($body);
+  } catch(PDOException $e) {
+      echo json_encode($e->getMessage());
+  }
+}
 
-} catch (\Exception $e) {
-    if (isset($app)) {
-        $app->handleException($e);
-    } else {
-        http_response_code(500);
-        header('Content-Type: application/json');
-        echo json_encode(array(
-            'status' => 500,
-            'statusText' => 'Internal Server Error',
-            'description' => $e->getMessage(),
-        ));
-    }
+
+function addPost() {
+  global $app;
+  $req = $app->request();
+  $body = json_decode($req->getBody());
+ 
+$sql = "INSERT INTO `mydb`.`Post` (`idPost`, `Title`, `DateTime`, `Description`, `Place`, `Blog_idTrip`) VALUES ('', :title, :dateTime, :description, :place, :blogId);"
+;
+  try {
+    $db = getConnection();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam("title", $body->title);
+    $stmt->bindParam("place", $body->place);
+    $stmt->bindParam("description", $body->description);
+    $stmt->bindParam("dateTime", $body->dateTime);
+    $stmt->bindParam("blogId", $body->blogId);
+    $stmt->execute();
+    $idPost = $db->lastInsertId();
+    $db = null;
+    $body->idPost = $idPost;
+    echo json_encode($body);
+  } catch(PDOException $e) {
+      echo json_encode($e->getMessage());
+  }
+}
+
+
+
+function getPosts($id) {
+  $sql = "select * FROM Post WHERE Blog_idTrip=".$id." ORDER BY idPost;";
+  try {
+    $db = getConnection();
+    $stmt = $db->query($sql);
+    $posts = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+    echo json_encode($posts);
+  }
+  catch(PDOException $e) {
+    echo json_encode($e->getMessage());
+  }
+}
+
+
+
+function addImage() {
+  global $app;
+  $req = $app->request();
+  $body = json_decode($req->getBody());
+ 
+$sql = "INSERT INTO `mydb`.`Image` (`Title`, `url`, `Post_idPost`) VALUES (:name, :link, :postId);";
+  try {
+    $db = getConnection();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam("name", $body->name);
+    $stmt->bindParam("link", $body->link);
+    $stmt->bindParam("postId", $body->postId);
+    $stmt->execute();
+    $db = null;
+    echo json_encode($body);
+  } catch(PDOException $e) {
+      echo json_encode($e->getMessage());
+  }
+}
+
+function getPost($idBlog, $idPost) {
+  $sql = "select * FROM Post WHERE Blog_idTrip=".$idBlog." AND idPost =".$idPost." ORDER BY idPost;";
+  try {
+    $db = getConnection();
+    $stmt = $db->query($sql);
+    $post = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+    echo json_encode($post);
+  }
+  catch(PDOException $e) {
+    echo json_encode($e->getMessage());
+  }
+}
+
+function getImages($idBlog, $idPost) {
+  $sql = "select * FROM Image WHERE Post_idPost=".$idPost." ORDER BY idImage;";
+  try {
+    $db = getConnection();
+    $stmt = $db->query($sql);
+    $post = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+    echo json_encode($post);
+  }
+  catch(PDOException $e) {
+    echo json_encode($e->getMessage());
+  }
+}
+
+
+function getComments($idBlog, $idPost) {
+  $sql = "select * FROM Comment WHERE Post_idPost=".$idPost." ORDER BY DateTime;";
+  try {
+    $db = getConnection();
+    $stmt = $db->query($sql);
+    $post = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+    echo json_encode($post);
+  }
+  catch(PDOException $e) {
+    echo json_encode($e->getMessage());
+  }
+}
+
+function addComment() {
+  global $app;
+  $req = $app->request();
+  $body = json_decode($req->getBody());
+
+ 
+$sql = "INSERT INTO `Comment` (`Text`, `DateTime`, `Post_idPost`, `name`) VALUES (:text, :DateTime, :postId, :name);
+";
+  try {
+    $db = getConnection();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam("text", $body->Text);
+    $stmt->bindParam("name", $body->name);
+    $stmt->bindParam("DateTime", $body->dateTime);
+    $stmt->bindParam("postId", $body->postId);
+    $stmt->execute();
+    $idBlog = $db->lastInsertId();
+    $db = null;
+/*    $body['idBlog'] = $idBlog;
+*/    $body->idBlog = $idBlog;
+    echo json_encode($body);
+  } catch(PDOException $e) {
+      echo json_encode($e->getMessage());
+  }
+}
+
+
+function getConnection() 
+{
+    $dbhost="127.0.0.1";
+    $dbuser="root";
+    $dbpass="1234";
+    $dbname="mydb";
+    $dbh= new \Slim\PDO\Database("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass, array(\Slim\PDO\Database::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+
+return $dbh;
 }

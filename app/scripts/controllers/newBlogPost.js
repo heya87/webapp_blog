@@ -7,36 +7,67 @@
  * # MainCtrl
  * Controller of the blogApp
  */
-angular.module('blogApp')
-  .controller('NewBlogPostCtrl', function ($scope, $http, $routeParams, $location) {
+ angular.module('blogApp')
+ .controller('NewBlogPostCtrl', function ($scope, $http, $routeParams, $location, $localStorage) {
 
 
-    $scope.newPost={};
-    $scope.doCreate = function (newPost) {
+  $scope.newPost={};
+  $scope.doCreate = function (newPost) {
 
-        var res = $http.post('/api/index.php/newPost', newPost);
-        res.success(function(data, status, headers, config) {
-/*          $location.path('/blogs/' + $routeParams.blogId + '/posts' + data.idPost);
-*/
-        });
-    };
+    $scope.newPost.blogId =  $routeParams.blogId;
 
-    $scope.images=[]
-    $scope.newImage={};
-    $scope.addImage = function (newImage) {
-      $scope.images.push({
-        name: $scope.newImage.name,
-        link: $scope.newImage.link
-        });
+    var now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    $scope.newPost.dateTime = now;
 
-      $scope.newImage.name = "";
-      $scope.newImage.link= "";
-    };
-
-    $scope.deleteImage = function (idx) {
-      $scope.images.splice(idx, 1); 
+    var config = {headers:  {
+            'username': $localStorage.currentUser,
+            'token': $localStorage.token
+        }
     };
 
 
-  });
+
+    var res = $http.post('/api/index.php/newPost', newPost, config);
+    res.success(function(data, status, headers, config) {
+
+      if($scope.images.length > 0) {
+        var index;
+        for (index = 0; index < $scope.images.length; ++index) {
+          $scope.images[index].postId = data.idPost;
+          $http.post('/api/index.php/newImage', $scope.images[index]);
+
+        }
+      }
+      $location.path('/blogs/' + $routeParams.blogId + '/posts' + data.idPost);
+
+    }).error(function(data, status, headers, config) {
+        if(status == 401) {
+          window.alert("You are not logged in, please log in first.");
+          $location.path('/login');
+        } else if (status == 500){
+          window.alert("Not your blog, FUCK OFF!!");
+        } else {
+          window.alert("Error with status: " + status);
+        }
+    });
+  };
+
+  $scope.images=[]
+  $scope.newImage={};
+  $scope.addImage = function (newImage) {
+    $scope.images.push({
+      name: $scope.newImage.name,
+      link: $scope.newImage.link
+    });
+
+    $scope.newImage.name = "";
+    $scope.newImage.link= "";
+  };
+
+  $scope.deleteImage = function (idx) {
+    $scope.images.splice(idx, 1); 
+  };
+
+
+});
 
