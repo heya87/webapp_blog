@@ -24,17 +24,15 @@ angular.module('blogApp')
 
     $scope.newBlog={};
     $scope.doCreate = function (newBlog) {
-        console.log(newBlog.title);
-        console.log(newBlog.description);
-        console.log(newBlog.destination);
-
-        console.log(newBlog);
 
         var config = {headers:  {
                 'username': $localStorage.currentUser,
                 'token': $localStorage.token
             }
         };
+
+        console.log($localStorage.currentUser);
+        console.log($localStorage.token);
 
 
         var res = $http.post('/api/index.php/newBlog', newBlog ,config);
@@ -47,6 +45,8 @@ angular.module('blogApp')
 
             if(status == 401) {
               window.alert("You are not logged in, please log in first.");
+              $localStorage.currentUser = {};
+              $localStorage.token = {};
               $location.path('/login');
             } else {
               window.alert("Error with status: " + status);
@@ -55,8 +55,14 @@ angular.module('blogApp')
     };
 
     $scope.goToNewPost = function () {
-      console.log("hellooo im ehre")
       $location.path('/blogs/'+ $scope.blog.idBlog + '/newPost');
+    };
+
+    $scope.isLoggedIn = function () {
+      if($localStorage.currentUser) {
+        return true;
+      }
+      return false;
     };
 
 

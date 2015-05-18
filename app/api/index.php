@@ -52,29 +52,29 @@ function getBlog($id) {
 
 
 function addBlog() {
-global $app;
+  global $app;
 
-$username = $app->request->headers->get('username');
-$token = $app->request->headers->get('token');
+  $username = $app->request->headers->get('username');
+  $token = $app->request->headers->get('token');
 
 
   if(isLoggedIn($username, $token)) {
 
-        $body = json_decode($app->request->getBody());
+    $body = json_decode($app->request->getBody());
 
-        $sql = "INSERT INTO `mydb`.`Blog` (`Title`, `Destination`, `Description`,`User_idUser`) VALUES (:title, :destination, :description, '1');
-        ";
-        try {
-          $db = getConnection();
-          $stmt = $db->prepare($sql);
-          $stmt->bindParam("title", $body->title);
-          $stmt->bindParam("destination", $body->destination);
-          $stmt->bindParam("description", $body->description);
-          $stmt->execute();
-          $idBlog = $db->lastInsertId();
-          $db = null;
-          $body->idBlog = $idBlog;
-          echo json_encode($body);
+    $sql = "INSERT INTO `mydb`.`Blog` (`Title`, `Destination`, `Description`,`User_idUser`) VALUES (:title, :destination, :description, '1');
+    ";
+    try {
+      $db = getConnection();
+      $stmt = $db->prepare($sql);
+      $stmt->bindParam("title", $body->title);
+      $stmt->bindParam("destination", $body->destination);
+      $stmt->bindParam("description", $body->description);
+      $stmt->execute();
+      $idBlog = $db->lastInsertId();
+      $db = null;
+      $body->idBlog = $idBlog;
+      echo json_encode($body);
     } catch(PDOException $e) {
       $app->response()->status(500);
       echo json_encode($e->getMessage());
@@ -234,24 +234,24 @@ echo json_encode($body);
 }
 
 function isLoggedIn($username, $token) {
-
-    $sql = "SELECT * FROM mydb.User WHERE UserName = '".$username."' AND token = '".$token."';";
+  $rightNow = new DateTime("now");
+  $sql = "SELECT * FROM mydb.User WHERE UserName = '".$username."' AND token = '".$token."' AND tokenExpired >= NOW();";
 
   try {
 
     $db = getConnection();
     $stmt = $db->query($sql);
     if($stmt->rowCount() > 0){
-      $db = null;
-      return true;
+        $db = null;
+        return true;
     }else {
       $db = null;
       return false;
     }
   }
   catch(PDOException $e) {
-      $db = null;
-      return false;
+    $db = null;
+    return false;
   }
 }
 
@@ -260,13 +260,13 @@ function isMyBlog($username, $blogId) {
   $sql = "SELECT idUser FROM mydb.User WHERE UserName = '".$username."';";
 
   
-    try {
+  try {
 
     $db = getConnection();
     $stmt = $db->query($sql);
     $userId = $stmt->fetchColumn();
 
-  $sql = "SELECT * FROM mydb.Blog WHERE idBlog = '".$blogId."' AND User_idUser = '".$userId."';";
+    $sql = "SELECT * FROM mydb.Blog WHERE idBlog = '".$blogId."' AND User_idUser = '".$userId."';";
 
     $stmt = $db->query($sql);
 
@@ -279,45 +279,46 @@ function isMyBlog($username, $blogId) {
     }
   }
   catch(PDOException $e) {
-      $db = null;
-      return false;
+    $db = null;
+    return false;
   }
 }
 
 
 function login() {
-  $body = json_decode($req->getBody());
-  $hash = password_hash($body->password, PASSWORD_DEFAULT);
 
-  $sql = "SELECT * FROM mydb.User WHERE UserName = ".$body->username." AND UserPassword = ".$hash.";";
+  global $app;
+  $req = $app->request();
+  $body = json_decode($req->getBody());
+  $username = $body->username;
+
+  $sql = "SELECT UserPassword FROM mydb.User WHERE UserName = '".$username."';";
   try {
 
     $db = getConnection();
     $stmt = $db->query($sql);
-    $user = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $hash = $stmt->fetchColumn();
 
-    if( ! $user)
-    {
+    if(password_verify ( $username, $hash)) {
       $token = md5(uniqid(mt_rand(), true));
-      $expired = 
-      $db = null;
-      $body->token = $token;
-      $body->password = null;
-      $sql = "UPDATE `mydb`.`User` SET `tokenExpired`=NOW() + INTERVAL 1 HOUR, `token`=".$token." WHERE `UserName`=".$body->username.";";
-
+      $sql = "UPDATE `mydb`.`User` SET `tokenExpired`=NOW() + INTERVAL 1 HOUR, `token`='".$token."' WHERE `UserName`='".$body->username."';";
       try {
         $db = getConnection();
         $stmt = $db->query($sql);
         $db = null;
+
+        $body->username = $username;
+        $body->token = $token;
+        $body->password = null;
+        echo json_encode($body); 
       }
       catch(PDOException $e) {
         echo json_encode($e->getMessage());
       }
 
-
-      echo json_encode($body); 
     } else {
-      header("HTTP/1.1 401 Unauthorized");
+      $app->response()->status(401);
+      echo 'Illegal credentials, try again';
     }
   }
   catch(PDOException $e) {

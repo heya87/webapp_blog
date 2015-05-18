@@ -11,16 +11,13 @@ angular.module('blogApp')
   .controller('AuthCtrl', function ($scope, $http, $routeParams, $localStorage, $location) {
  //initially set those objects to null to avoid undefined error
 
-    $scope.userName= {};
-    $scope.password= {};
+    $scope.user = {}
     $scope.doLogin = function (user) {
-        console.log(user.userName);
-        console.log(user.password);
 
 
         var res = $http.post('/api/index.php/login', user);
         res.success(function(data, status, headers, config) {
-            $localStorage.currentUser = data.userName;
+            $localStorage.currentUser = data.username;
             $localStorage.token = data.token;
             $location.path('/');
           console.log(data);

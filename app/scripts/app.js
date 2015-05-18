@@ -55,6 +55,15 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+ .controller("IndexCtrl", ["$scope", "$localStorage", function ($scope, $localStorage) {
+    $scope.isLoggedIn = function () {
+      if($localStorage.currentUser) {
+        return true;
+      }
+      return false;
+    };
+}]);
+
 
 

@@ -23,10 +23,11 @@
     <!-- Add your site or application content here -->
     <div class="container">
       <div class="header">
-        <h3 class="text-muted">Travel Blog</h3>
+        <h3 class="text-muted">Travel Blog </h3>
       </div>
+ <div ng-controller="IndexCtrl">
 
-
+      {{isLoggedIn()}}
       <nav class="navbar navbar-inverse">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -39,15 +40,18 @@
               <li class="active"><a href="#/createBlog">Create Blog</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-              <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-              <li><a href="#/"><span class="glyphicon glyphicon-log-out" ng-click="logout()"></span>Logout</a></li>
+              <li ng-hide="isLoggedIn()" ><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a> </li>
+              <li ng-hide="isLoggedIn()"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              <li ng-show="isLoggedIn()"><a href="#/"><span class="glyphicon glyphicon-log-out" ng-click="logout()"></span>Logout</a></li>
             </ul>
           </div>
         </div>
       </nav>
 
 
+      </div>
+
+      <div></div>
       <div ng-view=""></div>
 
     </div>
