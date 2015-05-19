@@ -34,7 +34,6 @@ angular.module('blogApp')
         console.log($localStorage.currentUser);
         console.log($localStorage.token);
 
-
         var res = $http.post('/api/index.php/newBlog', newBlog ,config);
         res.success(function(data, status, headers, config) {
           $location.path('/blogs/' + data.idBlog);
@@ -45,8 +44,7 @@ angular.module('blogApp')
 
             if(status == 401) {
               window.alert("You are not logged in, please log in first.");
-              $localStorage.currentUser = {};
-              $localStorage.token = {};
+              $localStorage.$reset();
               $location.path('/login');
             } else {
               window.alert("Error with status: " + status);

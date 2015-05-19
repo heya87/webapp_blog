@@ -1,7 +1,22 @@
 <div class="container">
 	<h2>My new post {{newPost.title}}</h2>
 	<form name="postForm" role="form">
-		<div class="form-group">
+
+
+
+			<div class="form-group">
+			
+			<select
+				class="form-control"
+				ng-selected="blog"
+			    ng-change="changed()"
+			    ng-model="selected"
+			    ng-options="data.Title for data in myBlogs">
+			    <option value="" disabled selected>Choose your blog!</option>
+			</select>
+
+
+			</div>
 			<label for="Title">Title:</label>
 			<input type="Title" class="form-control" id="title" ng-model="newPost.title">
 
@@ -10,6 +25,7 @@
 
 			<label for="Place">Place:</label>
 			<input type="Place" class="form-control" id="Place" ng-model="newPost.place" required>
+
 
 
 
@@ -64,5 +80,4 @@
 		Add Image
 	</button>
 </form>
-
-</div>
+<	/div>

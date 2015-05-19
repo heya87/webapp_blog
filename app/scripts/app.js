@@ -17,6 +17,7 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngStorage',
+    'ui.bootstrap',
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -48,7 +49,7 @@ angular
         templateUrl: 'views/createBlog.html',
         controller: 'BlogCtrl'
       })
-      .when('/blogs/:blogId/newPost', {
+      .when('/newPost', {
         templateUrl: 'views/createPost.html',
         controller: 'NewBlogPostCtrl'
       })
@@ -56,13 +57,37 @@ angular
         redirectTo: '/'
       });
   })
- .controller("IndexCtrl", ["$scope", "$localStorage", function ($scope, $localStorage) {
+ .controller("IndexCtrl", ["$scope", "$localStorage", "$location", function ($scope, $localStorage, $location) {
     $scope.isLoggedIn = function () {
       if($localStorage.currentUser) {
         return true;
       }
       return false;
     };
+    $scope.logout = function () {
+      $localStorage.$reset();
+      $location.path('/blogs');
+ 
+    };
+
+
+    $scope.switchStyle = function() {
+      console.log("asdf");
+      if($scope.navbarStyle == "navbar-default") {
+        $scope.navbarStyle = "navbar-inverse";
+
+      }else {
+        $scope.navbarStyle = "navbar-default";
+      }
+    };
+
+    $scope.itemClicked = function ($index) {
+      $scope.selectedIndex = $index;
+    };
+
+   $scope.navbarStyle = "navbar-inverse";
+
+
 }]);
 
 

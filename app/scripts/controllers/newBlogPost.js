@@ -10,11 +10,24 @@
  angular.module('blogApp')
  .controller('NewBlogPostCtrl', function ($scope, $http, $routeParams, $location, $localStorage) {
 
+  $scope.selected = {};
+
+  $http({method: 'GET', url: '/api/index.php/blogsbyuser/' + $localStorage.currentUser}).
+    success(function (data) {
+      console.log(data);
+
+    $scope.myBlogs = data;
+  });
 
   $scope.newPost={};
   $scope.doCreate = function (newPost) {
 
     $scope.newPost.blogId =  $routeParams.blogId;
+
+
+
+
+
 
     var now = new Date().toISOString().slice(0, 19).replace('T', ' ');
     $scope.newPost.dateTime = now;
@@ -55,6 +68,7 @@
   $scope.images=[]
   $scope.newImage={};
   $scope.addImage = function (newImage) {
+    console.log($scope.selected);
     $scope.images.push({
       name: $scope.newImage.name,
       link: $scope.newImage.link
@@ -67,6 +81,10 @@
   $scope.deleteImage = function (idx) {
     $scope.images.splice(idx, 1); 
   };
+
+  $scope.changed = function() {
+    console.log($scope.selected);
+}
 
 
 });

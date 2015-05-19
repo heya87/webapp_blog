@@ -8,6 +8,7 @@ $app = new \Slim\Slim();
 $app->contentType('application/json');
 $app->get('/blogs', 'getBlogs');
 $app->get('/blogs/:id', 'getBlog');
+$app->get('/blogsbyuser/:username', 'getBlogsByUser');
 $app->get('/blogs/:id/posts', 'getPosts');
 $app->get('/blogs/:idBlog/posts/:idPost', 'getPost');
 $app->get('/blogs/:idBlog/posts/:idPost/images/', 'getImages');
@@ -24,6 +25,22 @@ $app->run();
 
 function getBlogs() {
   $sql = "select * FROM Blog";
+  try {
+    $db = getConnection();
+    $stmt = $db->query($sql);
+    $blogs = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+    echo json_encode($blogs);
+  }
+  catch(PDOException $e) {
+    echo json_encode($e->getMessage());
+  }
+}
+
+
+function getBlogsByUser($username) {
+  $userId = getUserId($username);
+  $sql = "SELECT * FROM mydb.Blog WHERE User_idUser = ".$userId.";";
   try {
     $db = getConnection();
     $stmt = $db->query($sql);
@@ -57,12 +74,13 @@ function addBlog() {
   $username = $app->request->headers->get('username');
   $token = $app->request->headers->get('token');
 
+  $userId = getUserId($username);
 
   if(isLoggedIn($username, $token)) {
 
     $body = json_decode($app->request->getBody());
 
-    $sql = "INSERT INTO `mydb`.`Blog` (`Title`, `Destination`, `Description`,`User_idUser`) VALUES (:title, :destination, :description, '1');
+    $sql = "INSERT INTO `mydb`.`Blog` (`Title`, `Destination`, `Description`,`User_idUser`) VALUES (:title, :destination, :description, :userId);
     ";
     try {
       $db = getConnection();
@@ -70,6 +88,7 @@ function addBlog() {
       $stmt->bindParam("title", $body->title);
       $stmt->bindParam("destination", $body->destination);
       $stmt->bindParam("description", $body->description);
+      $stmt->bindParam("userId", $userId);
       $stmt->execute();
       $idBlog = $db->lastInsertId();
       $db = null;
@@ -283,6 +302,26 @@ function isMyBlog($username, $blogId) {
     return false;
   }
 }
+
+function getUserId($username) {
+
+  $sql = "SELECT idUser FROM mydb.User WHERE UserName = '".$username."';";
+
+  
+  try {
+
+    $db = getConnection();
+    $stmt = $db->query($sql);
+    $userId = $stmt->fetchColumn();
+    return $userId;
+
+  }
+  catch(PDOException $e) {
+    $db = null;
+    return false;
+  }
+}
+
 
 
 function login() {
