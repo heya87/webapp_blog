@@ -13,29 +13,34 @@
   $scope.selected = {};
 
   $http({method: 'GET', url: '/api/index.php/blogsbyuser/' + $localStorage.currentUser}).
-    success(function (data) {
-      console.log(data);
+  success(function (data) {
 
     $scope.myBlogs = data;
   });
 
   $scope.newPost={};
   $scope.doCreate = function (newPost) {
+    if(typeof $scope.selected.idBlog == 'undefined') {
+      window.alert("No blog selected, select blog first.");
+    }else if($scope.images.length == 0) {
+      window.alert("No image added, add at least one image!");
+    }else {
 
-    $scope.newPost.blogId =  $routeParams.blogId;
+
+      $scope.newPost.blogId =  $scope.selected.idBlog;
 
 
 
 
 
 
-    var now = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    $scope.newPost.dateTime = now;
+      var now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      $scope.newPost.dateTime = now;
 
-    var config = {headers:  {
-            'username': $localStorage.currentUser,
-            'token': $localStorage.token
-        }
+      var config = {headers:  {
+        'username': $localStorage.currentUser,
+        'token': $localStorage.token
+      }
     };
 
 
@@ -54,38 +59,33 @@
       $location.path('/blogs/' + $routeParams.blogId + '/posts' + data.idPost);
 
     }).error(function(data, status, headers, config) {
-        if(status == 401) {
-          window.alert("You are not logged in, please log in first.");
-          $location.path('/login');
-        } else if (status == 500){
-          window.alert("Not your blog, FUCK OFF!!");
-        } else {
-          window.alert("Error with status: " + status);
-        }
+      if(status == 401) {
+        window.alert("You are not logged in, please log in first.");
+        $location.path('/login');
+      } else if (status == 500){
+        window.alert("Not your blog, FUCK OFF!!");
+      } else {
+        window.alert("Error with status: " + status);
+      }
     });
-  };
+  }
 
-  $scope.images=[]
-  $scope.newImage={};
-  $scope.addImage = function (newImage) {
-    console.log($scope.selected);
-    $scope.images.push({
-      name: $scope.newImage.name,
-      link: $scope.newImage.link
-    });
+};
 
-    $scope.newImage.name = "";
-    $scope.newImage.link= "";
-  };
+$scope.images=[]
+$scope.newImage={};
+$scope.addImage = function (newImage) {
+  $scope.images.push({
+    name: $scope.newImage.name,
+    link: $scope.newImage.link
+  });
 
-  $scope.deleteImage = function (idx) {
-    $scope.images.splice(idx, 1); 
-  };
+  $scope.newImage.name = "";
+  $scope.newImage.link= "";
+};
 
-  $scope.changed = function() {
-    console.log($scope.selected);
-}
-
-
+$scope.deleteImage = function (idx) {
+  $scope.images.splice(idx, 1); 
+};
 });
 

@@ -80,7 +80,7 @@ function addBlog() {
 
     $body = json_decode($app->request->getBody());
 
-    $sql = "INSERT INTO `mydb`.`Blog` (`Title`, `Destination`, `Description`,`User_idUser`) VALUES (:title, :destination, :description, :userId);
+    $sql = "INSERT INTO `mydb`.`Blog` (`Title`, `Destination`, `Description`,`User_idUser`, 'Image') VALUES (:title, :destination, :description, :userId, :image);
     ";
     try {
       $db = getConnection();
@@ -89,6 +89,7 @@ function addBlog() {
       $stmt->bindParam("destination", $body->destination);
       $stmt->bindParam("description", $body->description);
       $stmt->bindParam("userId", $userId);
+      $stmt->bindParam("image", $$body->image);
       $stmt->execute();
       $idBlog = $db->lastInsertId();
       $db = null;

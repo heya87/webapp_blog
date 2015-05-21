@@ -1,16 +1,18 @@
 <div class="container">
-  <h2>My new blog {{newBlog.title}}</h2>
-  <form role="form">
+  <h2>My new blog <b>{{newBlog.title}}</b></h2>
+  <form name="blogForm" role="form">
     <div class="form-group">
       <label for="Title">Title:</label>
-      <input type="Title" class="form-control" id="title" ng-model="newBlog.title">
+      <input type="Title" class="form-control" id="title" ng-model="newBlog.title" required>
        <label for="Destination">Destination:</label>
-      <input type="Description" class="form-control" id="description" ng-model="newBlog.destination">
+      <input type="Description" class="form-control" id="description" ng-model="newBlog.destination" required>
        <label for="Description">Short description:</label>
-      <textarea class="form-control" rows="5" id="Description" ng-model="newBlog.description"></textarea>
+      <textarea class="form-control" rows="5" id="Description" ng-model="newBlog.description" required></textarea>
+      <label for="ImageLink">Title image link:</label>
+      <input type="ImageLink" class="form-control" id="ImageLink" ng-model="newImage.link" required>
     	</div>
 	    
-	    <button type="submit" class="width-35 pull-right btn btn-sm btn-default" ng-click="doCreate(newBlog)" data-ng-disabled="loginForm.$invalid">
+	    <button type="submit" class="width-35 pull-right btn btn-sm btn-default" ng-click="doCreate(newBlog)" data-ng-disabled="blogForm.$invalid">
 			<i class="ace-icon fa fa-key"></i>
 			Login
 	    </button>

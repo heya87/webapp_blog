@@ -11,12 +11,12 @@ angular.module('blogApp')
   .controller('BlogCtrl', function ($scope, $http, $routeParams, $location, $localStorage) {
     
 
-    $http({method: 'GET', url: '/api/index.php/blogs/1'}).
+    $http({method: 'GET', url: '/api/index.php/blogs/' + $routeParams.blogId}).
       success(function (data) {
       $scope.blog = data[0];
     });
 
-	$http({method: 'GET', url: '/api/index.php/blogs/1/posts'}).
+	$http({method: 'GET', url: '/api/index.php/blogs/' + $routeParams.blogId + '/posts'}).
       success(function (data) {
       $scope.posts = data;
     });

@@ -19,7 +19,7 @@
 
     <ul class="blogs">
       <li ng-repeat="blog in blogs" class="thumbnail">  
-        <a href="#/blogs/{{blog.idBlog}}" class="thumb"><img src="http://th04.deviantart.net/fs70/PRE/f/2012/324/3/2/flag_of_japan_by_ozelotstudios-d5llymh.jpg"></a>
+        <a href="#/blogs/{{blog.idBlog}}" class="thumb"><img ng-src="{{blog.Image}}"></a>
         <a href="#/blogs/{{blog.idBlog}}">{{blog.Title}}</a>
         <p>Destination: {{blog.Destination}}</p>
         <p>{{blog.Description}}</p>

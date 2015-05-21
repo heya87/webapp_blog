@@ -1,67 +1,84 @@
 <!doctype html>
 <html class="no-js">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
-    <link rel="stylesheet" href="bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-  </head>
-  <body ng-app="blogApp">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+</head>
+<body ng-app="blogApp">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+      <![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="container">
-      <div class="header">
-        <h3 class="text-muted">Travel Blog </h3>
+      <!-- Add your site or application content here -->
+      <div ng-controller="IndexCtrl">
+      <div class="container">
 
-
-      </div>
- <div ng-controller="IndexCtrl">
-      <input  type="checkbox" ng-model="style" ng-click="switchStyle()">
+        <div class="container">
+          <div class="pull-right">
 
 
+            <div class="onoffswitch">
+              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" ng-model="style" ng-click="switchStyle()" checked>
+              <label class="onoffswitch-label" for="myonoffswitch">
+                <span class="onoffswitch-inner"></span>
+                <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
 
-      {{isLoggedIn()}}
-      <nav class="navbar " ng-class="navbarStyle">
-        <div class="container-fluid">
-          <div class="navbar-header">
           </div>
-          <div>
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-            </ul>
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#/createBlog">Create Blog</a></li>
-              <li class="active"><a href="#/newPost">Add Post</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li ng-hide="isLoggedIn()" ><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a> </li>
-              <li ng-hide="isLoggedIn()"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-              <li ng-show="isLoggedIn()" ng-click="logout()"><a href="#/"><span class="glyphicon glyphicon-log-out" ></span>Logout</a></li>
-            </ul>
+          <div class="header">
+            <form class="form-inline">
+              <div class="form-group">
+               <canvas id="logo" width="120" height="120"></canvas>
+             </div>
+
+             <div class="form-group">
+              <h3 class="text-muted">Travel Blog </h3>
+            </div>
+            <div class="form-group">
+             <canvas id="logo" width="120" height="120"></canvas>
+           </div>
+
+         </form>
+
+       </div>
+       <div>
+        <nav class="navbar " ng-class="navbarStyle">
+          <div class="container-fluid">
+            <div class="navbar-header">
+            </div>
+            <div>
+              <ul class="nav navbar-nav">
+                <li ng-class="homeBarState" ng-click="makeHomeActive()"><a href="#">Home</a></li>
+              </ul>
+              <ul class="nav navbar-nav">
+                <li ng-show="isLoggedIn()" ng-class="createBlogState" ng-click="makeCreateBlogActive()"><a href="#/createBlog">Create Blog</a></li>
+                <li ng-show="isLoggedIn()" ng-class="addPostState" ng-click="makeAddPostActive()"><a href="#/newPost">Add Post</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li ng-hide="isLoggedIn()" ><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a> </li>
+                <li ng-hide="isLoggedIn()"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li ng-show="isLoggedIn()" ng-click="logout()"><a href="#/"><span class="glyphicon glyphicon-log-out" ></span>Logout</a></li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </nav>
-
-
+        </nav>
       </div>
-
-      <div></div>
+      </div>
       <div ng-view=""></div>
-
     </div>
 
 
@@ -91,21 +108,44 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/blog.js"></script>
-        <script src="scripts/controllers/blogPost.js"></script>
-        <script src="scripts/controllers/newBlogPost.js"></script>
-        <script src="scripts/controllers/auth.js"></script>
-        <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/blog.js"></script>
+    <script src="scripts/controllers/blogPost.js"></script>
+    <script src="scripts/controllers/newBlogPost.js"></script>
+    <script src="scripts/controllers/auth.js"></script>
+    <!-- endbuild -->
 
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.10.3/TweenMax.min.js"></script>
-        <script src="bower_components/ngstorage/ngStorage.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.10.3/TweenMax.min.js"></script>
+    <script src="bower_components/ngstorage/ngStorage.js"></script>
 
 
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
 
-</body>
-</html>
+
+
+    <script>
+      var canvas = document.getElementById('logo');
+      var context = canvas.getContext('2d');
+      var centerX = canvas.width / 2 ;
+      var centerY = canvas.height / 2 -4;
+      var radius = 40;
+
+      context.beginPath();
+      context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+      context.fillStyle = 'black';
+      context.fill();
+      context.lineWidth = 5;
+      context.strokeStyle = 'black';
+      context.stroke();
+      
+      context.fillStyle = 'white';
+      context.font = '30pt lato';
+      context.fillText('TB', 36,68);
+    </script>
+
+
+  </body>
+  </html>

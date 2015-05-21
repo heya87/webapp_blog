@@ -7,7 +7,7 @@
 
     <ul class="blogs">
       <li ng-repeat="post in posts" class="thumbnail">  
-        <a href="#/blogs/{{blog.idBlog}}/posts/{{post.idPost}}" class="thumb"><img src="http://th04.deviantart.net/fs70/PRE/f/2012/324/3/2/flag_of_japan_by_ozelotstudios-d5llymh.jpg"></a>
+        <a href="#/blogs/{{blog.idBlog}}/posts/{{post.idPost}}" class="thumb"><img ng-src="{{blog.Image}}"></a>
         <a href="#/blogs/{{blog.idBlog}}/posts/{{post.idPost}}">{{post.Title}}</a>
         <p> Place: {{post.Place}}</p>
         <p> Time: {{post.DateTime}}</p>

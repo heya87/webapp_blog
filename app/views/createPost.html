@@ -1,5 +1,5 @@
 <div class="container">
-	<h2>My new post {{newPost.title}}</h2>
+	<h2>My new post <b>{{newPost.title}}</b></h2>
 	<form name="postForm" role="form">
 
 
@@ -11,7 +11,8 @@
 				ng-selected="blog"
 			    ng-change="changed()"
 			    ng-model="selected"
-			    ng-options="data.Title for data in myBlogs">
+			    ng-options="data.Title for data in myBlogs"
+			    required>
 			    <option value="" disabled selected>Choose your blog!</option>
 			</select>
 

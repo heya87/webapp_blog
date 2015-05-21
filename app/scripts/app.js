@@ -8,6 +8,10 @@
  *
  * Main module of the application.
  */
+
+
+
+
 angular
   .module('blogApp', [
     'ngAnimate',
@@ -72,12 +76,10 @@ angular
 
 
     $scope.switchStyle = function() {
-      console.log("asdf");
-      if($scope.navbarStyle == "navbar-default") {
-        $scope.navbarStyle = "navbar-inverse";
-
-      }else {
+      if($scope.navbarStyle == "navbar-inverse") {
         $scope.navbarStyle = "navbar-default";
+      }else {
+        $scope.navbarStyle = "navbar-inverse";
       }
     };
 
@@ -85,8 +87,30 @@ angular
       $scope.selectedIndex = $index;
     };
 
-   $scope.navbarStyle = "navbar-inverse";
+    $scope.style = true;
+    $scope.navbarStyle = "navbar-inverse";
 
+    $scope.homeBarState = "active";
+    $scope.createBlogState = "";
+    $scope.addPostState= "";
+
+    $scope.makeHomeActive = function () {
+      $scope.homeBarState = "active";
+      $scope.createBlogState = "";
+      $scope.addPostState= "";
+    }
+
+    $scope.makeCreateBlogActive = function () {
+      $scope.homeBarState = "";
+      $scope.createBlogState = "active";
+      $scope.addPostState= "";
+    }
+
+    $scope.makeAddPostActive = function () {
+      $scope.homeBarState = "";
+      $scope.createBlogState = "";
+      $scope.addPostState= "active";
+    }
 
 }]);
 

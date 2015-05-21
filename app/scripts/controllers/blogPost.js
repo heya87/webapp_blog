@@ -33,7 +33,6 @@ angular.module('blogApp')
   $http({method: 'GET', url: url}).
     success(function (data) {
     $scope.images= data;
-    console.log(data);
   });
 
 
@@ -66,6 +65,7 @@ angular.module('blogApp')
 
         $scope.direction = 'left';
         $scope.currentIndex = 0;
+
 
         $scope.setCurrentSlideIndex = function (index) {
             $scope.direction = (index > $scope.currentIndex) ? 'left' : 'right';
