@@ -1,0 +1,22 @@
+<!doctype html> <html class="no-js"> <head> <meta charset="utf-8"> <title>Blog</title> <meta name="description" content=""> <meta name="viewport" content="width=device-width"> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <link rel="stylesheet" href="styles/vendor.3599b4e6.css"> <link rel="stylesheet" href="styles/main.a93fdd3f.css">  <body ng-app="blogApp"> <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+      <![endif]--> <!-- Add your site or application content here --> <div ng-controller="IndexCtrl"> <div class="container"> <div class="container"> <div class="pull-right"> <div class="onoffswitch"> <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" ng-model="style" ng-click="switchStyle()" checked> <label class="onoffswitch-label" for="myonoffswitch"> <span class="onoffswitch-inner"></span> <span class="onoffswitch-switch"></span> </label> </div> </div> <div class="header"> <form class="form-inline"> <div class="form-group"> <canvas id="logo" width="120" height="120"></canvas> </div> <div class="form-group"> <h3 class="text-muted">Travel Blog </h3> </div> </form> </div> <div> <nav class="navbar" ng-class="navbarStyle"> <div class="container-fluid"> <div class="navbar-header"> </div> <div> <ul class="nav navbar-nav"> <li ng-class="homeBarState" ng-click="makeHomeActive()"><a href="#">Home</a></li> </ul> <ul class="nav navbar-nav"> <li ng-show="isLoggedIn()" ng-class="createBlogState" ng-click="makeCreateBlogActive()"><a href="#/createBlog">Create Blog</a></li> <li ng-show="isLoggedIn()" ng-class="addPostState" ng-click="makeAddPostActive()"><a href="#/newPost">Add Post</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li ng-hide="isLoggedIn()"><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a> </li> <li ng-hide="isLoggedIn()"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> <li ng-show="isLoggedIn()" ng-click="logout()"><a href="#/"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li> </ul> </div> </div> </nav> </div> </div> <div ng-view=""></div> </div> <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]--> <script src="scripts/vendor.521b9615.js"></script> <script src="scripts/scripts.ec8a4c3b.js"></script> <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.10.3/TweenMax.min.js"></script> <script>var canvas = document.getElementById('logo');
+      var context = canvas.getContext('2d');
+      var centerX = canvas.width / 2 ;
+      var centerY = canvas.height / 2 -4;
+      var radius = 40;
+
+      context.beginPath();
+      context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+      context.fillStyle = 'black';
+      context.fill();
+      context.lineWidth = 5;
+      context.strokeStyle = 'black';
+      context.stroke();
+      
+      context.fillStyle = 'white';
+      context.font = '30pt lato';
+      context.fillText('TB', 36,68);</script> </div> 

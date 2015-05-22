@@ -21,7 +21,6 @@ angular.module('blogApp')
     $http({method: 'GET', url: '/api/index.php/blogs'}).
       success(function (data) {
       $scope.blogs = data;
-      console.log($scope.blogs[0].Image);
     });
 
 

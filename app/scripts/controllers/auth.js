@@ -20,7 +20,6 @@ angular.module('blogApp')
             $localStorage.currentUser = data.username;
             $localStorage.token = data.token;
             $location.path('/');
-          console.log(data);
         }).
           error(function(data, status, headers, config) {
             window.alert("Wrong credentials, try again.");
@@ -32,20 +31,15 @@ angular.module('blogApp')
     $scope.newUser= {};
 
     $scope.doSignup = function (newUser) {
-        console.log(newUser.username);
-        console.log(newUser.password);
-        console.log(newUser.password2);
-
         if(newUser.password == newUser.password2) {
             var res = $http.post('/api/index.php/signup', newUser);
             res.success(function(data, status, headers, config) {
                 $localStorage.currentUser = data.username;
                 $localStorage.token = data.token;
-                console.log(data);
                 $location.path('/blogs/');
             }).
               error(function(data, status, headers, config) {
-                window.alert("Something went wrong, try again.");
+                window.alert("Something went wrong, try again.", data, status, headers, config);
             });
         } else {
             window.alert("Passwords are not equals, try again.");

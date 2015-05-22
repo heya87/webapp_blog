@@ -80,7 +80,7 @@ function addBlog() {
 
     $body = json_decode($app->request->getBody());
 
-    $sql = "INSERT INTO `mydb`.`Blog` (`Title`, `Destination`, `Description`,`User_idUser`, 'Image') VALUES (:title, :destination, :description, :userId, :image);
+    $sql = "INSERT INTO `mydb`.`Blog` (`Title`, `Destination`, `Description`,`User_idUser`, `Image`) VALUES (:title, :destination, :description, :userId, :image);
     ";
     try {
       $db = getConnection();
@@ -89,7 +89,7 @@ function addBlog() {
       $stmt->bindParam("destination", $body->destination);
       $stmt->bindParam("description", $body->description);
       $stmt->bindParam("userId", $userId);
-      $stmt->bindParam("image", $$body->image);
+      $stmt->bindParam("image", $body->image);
       $stmt->execute();
       $idBlog = $db->lastInsertId();
       $db = null;
@@ -233,14 +233,14 @@ function addComment() {
   $body = json_decode($req->getBody());
 
 
-  $sql = "INSERT INTO `Comment` (`Text`, `DateTime`, `Post_idPost`, `name`) VALUES (:text, :DateTime, :postId, :name);
+  $sql = "INSERT INTO `Comment` (`Text`, `DateTime`, `Post_idPost`, `name`) VALUES (:text, :datetime, :postId, :name);
   ";
   try {
     $db = getConnection();
     $stmt = $db->prepare($sql);
     $stmt->bindParam("text", $body->Text);
     $stmt->bindParam("name", $body->name);
-    $stmt->bindParam("DateTime", $body->dateTime);
+    $stmt->bindParam("datetime", $body->dateTime);
     $stmt->bindParam("postId", $body->postId);
     $stmt->execute();
     $idBlog = $db->lastInsertId();
@@ -254,6 +254,7 @@ echo json_encode($body);
 }
 
 function isLoggedIn($username, $token) {
+  date_default_timezone_set('Europe/Berlin');
   $rightNow = new DateTime("now");
   $sql = "SELECT * FROM mydb.User WHERE UserName = '".$username."' AND token = '".$token."' AND tokenExpired >= NOW();";
 
@@ -368,6 +369,7 @@ function login() {
 
 
 function signup() {
+
   global $app;
   $req = $app->request();
   $body = json_decode($req->getBody());

@@ -9,12 +9,12 @@
        <label for="Description">Short description:</label>
       <textarea class="form-control" rows="5" id="Description" ng-model="newBlog.description" required></textarea>
       <label for="ImageLink">Title image link:</label>
-      <input type="ImageLink" class="form-control" id="ImageLink" ng-model="newImage.link" required>
+      <input type="ImageLink" class="form-control" id="ImageLink" ng-model="newBlog.image" required>
     	</div>
 	    
 	    <button type="submit" class="width-35 pull-right btn btn-sm btn-default" ng-click="doCreate(newBlog)" data-ng-disabled="blogForm.$invalid">
 			<i class="ace-icon fa fa-key"></i>
-			Login
+			Create!!
 	    </button>
     </div>
   </form>

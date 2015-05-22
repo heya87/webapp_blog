@@ -6,12 +6,11 @@
  <div class="col-md-10">
 
     <ul class="blogs">
-      <li ng-repeat="post in posts" class="thumbnail">  
+      <li ng-repeat="post in posts track by $index" class="thumbnail">  
         <a href="#/blogs/{{blog.idBlog}}/posts/{{post.idPost}}" class="thumb"><img ng-src="{{blog.Image}}"></a>
         <a href="#/blogs/{{blog.idBlog}}/posts/{{post.idPost}}">{{post.Title}}</a>
         <p> Place: {{post.Place}}</p>
         <p> Time: {{post.DateTime}}</p>
-        <p>{{post.Description}}</p>
       </li>
 
       </li>
